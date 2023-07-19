@@ -28,7 +28,7 @@ base_names = []
 for each in glob.glob('*.mp3') + glob.glob('*.wav'):
     # print(each)
     base_name, _ = os.path.splitext(each)
-    base_names.append(base_name)
+    base_names.append((base_name, os.stat(each)))
     # print(base_name)
 
     with open(f'{base_name}.html', 'w', encoding='utf-8') as f:
@@ -36,7 +36,9 @@ for each in glob.glob('*.mp3') + glob.glob('*.wav'):
 
 subprocess.Popen([os.path.normpath(os.path.join(__file__, '..', 'up.bat'))], cwd=os.getcwd()).wait()
 
-for base_name in base_names:
+base_names.sort(key=lambda each: each[1])
+
+for (base_name, _) in base_names:
     print(base_name)
     print(f'https://static.notexists.top/pronunciations/{urllib.parse.quote(base_name)}.html')
     print('')
