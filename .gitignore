@@ -1,0 +1,5 @@
+*.mp3
+*.wav
+*.html
+__pycache__
+*.py[c|o]
