@@ -15,7 +15,7 @@ def make_html(audio: str) -> str:
     </head>
     <body>
         <a href="{name}" target="_blank"><h1>{title}</h1></a>
-        <audio controls loop autoplay>
+        <audio controls autoplay>
         <source src="{name}" type="{guess_type}">
         Your browser does not support the audio element.
         </audio> 
@@ -38,7 +38,24 @@ subprocess.Popen([os.path.normpath(os.path.join(__file__, '..', 'up.bat'))], cwd
 
 base_names.sort(key=lambda each: each[1])
 
-for (base_name, _) in base_names:
-    print(base_name)
-    print(f'https://static.notexists.top/pronunciations/{urllib.parse.quote(base_name)}.html')
-    print('')
+history_file = '.history.txt'
+open_mode = 'a+'
+if not os.path.exists(history_file):
+    open_mode = 'w+'
+
+
+with open(history_file, open_mode, encoding='utf-8') as f:
+    f.seek(0)
+    old_contents = set(each.strip() for each in f.readlines())
+    
+
+    for (base_name, _) in base_names:
+        if base_name in old_contents:
+            continue
+
+        old_contents.add(base_name)
+        f.write(f'{base_name}\n')
+
+        print(base_name)
+        print(f'https://static.notexists.top/pronunciations/{urllib.parse.quote(base_name)}.html')
+        print('')
