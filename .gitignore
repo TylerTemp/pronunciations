@@ -4,3 +4,5 @@
 __pycache__
 *.py[c|o]
 .history.txt
+cut/google.json
+

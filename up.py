@@ -12,13 +12,20 @@ def make_html(audio: str) -> str:
         <meta charset="utf-8">
         <meta name="viewport" content="minimum-scale=1,initial-scale=1,width=device-width,shrink-to-fit=no">
         <title>{title}</title>
+        <style>
+            html, body {{
+                font-family: sans-serif;
+            }}
+        </style>
     </head>
     <body>
         <a href="{name}" target="_blank"><h1>{title}</h1></a>
         <audio controls autoplay>
         <source src="{name}" type="{guess_type}">
         Your browser does not support the audio element.
-        </audio> 
+        </audio>
+
+        <textarea></textarea>
     </body>
 <html>
 """.format(name=audio, guess_type=guess_type, title=os.path.splitext(audio)[0])
@@ -47,7 +54,7 @@ if not os.path.exists(history_file):
 with open(history_file, open_mode, encoding='utf-8') as f:
     f.seek(0)
     old_contents = set(each.strip() for each in f.readlines())
-    
+
 
     for (base_name, _) in base_names:
         if base_name in old_contents:
