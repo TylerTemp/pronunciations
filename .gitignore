@@ -1,8 +1,8 @@
 *.mp3
 *.wav
 *.html
+*.ogg
 __pycache__
 *.py[c|o]
 .history.txt
 cut/google.json
-
