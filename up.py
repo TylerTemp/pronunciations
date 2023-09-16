@@ -3,6 +3,7 @@ import os
 import subprocess
 import urllib.parse
 import mimetypes
+import sys
 
 
 def make_html(audio: str) -> str:
@@ -32,7 +33,7 @@ def make_html(audio: str) -> str:
 
 base_names = []
 
-for each in glob.glob('*.mp3') + glob.glob('*.wav'):
+for each in glob.glob('*.mp3') + glob.glob('*.wav') + glob.glob('*.ogg'):
     # print(each)
     base_name, _ = os.path.splitext(each)
     base_names.append((base_name, os.stat(each)))
@@ -41,7 +42,10 @@ for each in glob.glob('*.mp3') + glob.glob('*.wav'):
     with open(f'{base_name}.html', 'w', encoding='utf-8') as f:
         f.write(make_html(each))
 
-subprocess.Popen([os.path.normpath(os.path.join(__file__, '..', 'up.bat'))], cwd=os.getcwd()).wait()
+# subprocess.Popen([os.path.normpath(os.path.join(__file__, '..', 'up.bat'))], cwd=os.getcwd()).wait()
+subprocess.Popen(['rsync'] + sys.argv[1:] + ['--progress', '*', 'tyler@notexists.top:static/pronunciations/'], cwd=os.getcwd(), shell=True).wait()
+# subprocess.Popen('rsync --progress * tyler@notexists.top:static/pronunciations/', cwd=os.getcwd(), shell=True).wait()
+subprocess.Popen(['ssh', 'tyler@notexists.top', 'bash', '~/static/pronunciations/permission.sh'], cwd=os.getcwd()).wait()
 
 base_names.sort(key=lambda each: each[1])
 
